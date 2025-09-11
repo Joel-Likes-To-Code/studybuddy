@@ -1,0 +1,127 @@
+// prisma/schema.prisma
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+/* ---------- Auth (NextAuth) ---------- */
+
+model User {
+  id         String      @id @default(cuid())
+  email      String      @unique
+  name       String?
+  image      String?
+  createdAt  DateTime    @default(now())
+  updatedAt  DateTime    @updatedAt
+
+  accounts   Account[]
+  sessions   Session[]
+
+  // Domain relations
+  notes      Note[]
+  cards      Card[]
+  reviewLogs ReviewLog[]
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id])
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+
+  user User @relation(fields: [userId], references: [id])
+}
+
+/* ---------- Domain (StudyBuddy) ---------- */
+
+model Note {
+  id        String   @id @default(cuid())
+  userId    String
+  title     String
+  content   String   // markdown
+  tags      String[] @default([])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user  User  @relation(fields: [userId], references: [id])
+  cards Card[]
+
+  @@index([userId, createdAt])
+}
+
+enum CardType {
+  CLOZE
+  QA
+}
+
+model Card {
+  id        String   @id @default(cuid())
+  userId    String
+  noteId    String?
+  type      CardType
+  prompt    String  
+  answer    String 
+  dueAt     DateTime @default(now())
+  interval  Int      @default(1)       
+  ease      Int      @default(250)    
+  streak    Int      @default(0)
+  suspended Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user User  @relation(fields: [userId], references: [id])
+  note Note? @relation(fields: [noteId], references: [id])
+  logs ReviewLog[]
+
+  @@index([userId, dueAt])
+}
+
+enum Rating {
+  AGAIN
+  HARD
+  GOOD
+  EASY
+}
+
+model ReviewLog {
+  id        String   @id @default(cuid())
+  userId    String
+  cardId    String
+  rating    Rating
+  prevDueAt DateTime
+  newDueAt  DateTime
+  prevInt   Int
+  newInt    Int
+  prevEase  Int
+  newEase   Int
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id])
+  card Card @relation(fields: [cardId], references: [id])
+
+  @@index([userId, createdAt])
+}
