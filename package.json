@@ -6,7 +6,20 @@
     "dev": "next dev --turbopack",
     "build": "next build --turbopack",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    
+    "db:up": "docker compose up -d",
+    "db:down": "docker compose down",
+    "db:logs": "docker compose logs -f db",
+
+    "// Prisma - local dev against Docker": "",
+    "prisma:generate": "dotenv -e .env.docker -- prisma generate",
+    "prisma:migrate:dev": "dotenv -e .env.docker -- prisma migrate dev",
+    "prisma:studio": "dotenv -e .env.docker -- prisma studio",
+    
+    "// Prisma - apply migrations on Supabase": "",
+    "prisma:migrate:deploy": "dotenv -e .env.supabase -- prisma migrate deploy",
+    "prisma:reset:supabase": "dotenv -e .env.supabase -- prisma migrate reset --force"
   },
   "dependencies": {
     "@prisma/client": "^6.16.0",
@@ -30,6 +43,7 @@
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "dotenv-cli": "^10.0.0",
     "eslint": "^9",
     "eslint-config-next": "15.5.3",
     "tailwindcss": "^4",
@@ -37,3 +51,4 @@
     "typescript": "^5"
   }
 }
+

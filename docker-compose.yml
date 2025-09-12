@@ -1,0 +1,15 @@
+services:
+  db:
+    image: postgres:17-alpine
+    container_name: studybuddy-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: sb_user
+      POSTGRES_PASSWORD: sb_pass
+      POSTGRES_DB: studybuddy
+    ports:
+      - "5432:5432"
+    volumes:
+      - sb_pg_data:/var/lib/postgresql/data
+volumes:
+  sb_pg_data:
