@@ -1,0 +1,148 @@
+2025-09-18T22:16:04.959584Z  INFO tailwindcss_oxide::scanner: Provided sources:
+2025-09-18T22:16:04.959670Z  INFO tailwindcss_oxide::scanner: Source: PublicSourceEntry { base: "C:\\DevProjects\\StudyBuddy\\studybuddy", pattern: "**/*", negated: false }
+2025-09-18T22:16:04.959876Z  INFO tailwindcss_oxide::scanner: Optimized sources:
+2025-09-18T22:16:04.960010Z  INFO tailwindcss_oxide::scanner: Source: Auto { base: "C:\\DevProjects\\StudyBuddy\\studybuddy" }
+2025-09-18T22:16:04.961058Z  INFO scan_sources: tailwindcss_oxide::scanner: enter
+2025-09-18T22:16:04.973855Z  INFO scan_sources: tailwindcss_oxide::scanner: Discovering "C:\\DevProjects\\StudyBuddy\\studybuddy\\auth.ts"
+2025-09-18T22:16:04.974227Z  INFO scan_sources: tailwindcss_oxide::scanner: Discovering "C:\\DevProjects\\StudyBuddy\\studybuddy\\components.json"
+2025-09-18T22:16:04.974297Z  INFO scan_sources: tailwindcss_oxide::scanner: Discovering "C:\\DevProjects\\StudyBuddy\\studybuddy\\docker-compose.yml"
+2025-09-18T22:16:04.974356Z  INFO scan_sources: tailwindcss_oxide::scanner: Discovering "C:\\DevProjects\\StudyBuddy\\studybuddy\\eslint.config.mjs"
+2025-09-18T22:16:04.974410Z  INFO scan_sources: tailwindcss_oxide::scanner: Discovering "C:\\DevProjects\\StudyBuddy\\studybuddy\\LICENSE"
+2025-09-18T22:16:04.974466Z  INFO scan_sources: tailwindcss_oxide::scanner: Discovering "C:\\DevProjects\\StudyBuddy\\studybuddy\\next.config.ts"
+2025-09-18T22:16:04.974873Z  INFO scan_sources: tailwindcss_oxide::scanner: Discovering "C:\\DevProjects\\StudyBuddy\\studybuddy\\package.json"
+2025-09-18T22:16:04.974972Z  INFO scan_sources: tailwindcss_oxide::scanner: Discovering "C:\\DevProjects\\StudyBuddy\\studybuddy\\postcss.config.mjs"
+2025-09-18T22:16:04.975125Z  INFO scan_sources: tailwindcss_oxide::scanner: Discovering "C:\\DevProjects\\StudyBuddy\\studybuddy\\prisma"
+2025-09-18T22:16:04.975305Z  INFO scan_sources: tailwindcss_oxide::scanner: Discovering "C:\\DevProjects\\StudyBuddy\\studybuddy\\prisma\\migrations"
+2025-09-18T22:16:04.975514Z  INFO scan_sources: tailwindcss_oxide::scanner: Discovering "C:\\DevProjects\\StudyBuddy\\studybuddy\\prisma\\migrations\\20250912005529_init_db"
+2025-09-18T22:16:04.975625Z  INFO scan_sources: tailwindcss_oxide::scanner: Discovering "C:\\DevProjects\\StudyBuddy\\studybuddy\\prisma\\migrations\\20250912005529_init_db\\migration.sql"
+2025-09-18T22:16:04.975704Z  INFO scan_sources: tailwindcss_oxide::scanner: Discovering "C:\\DevProjects\\StudyBuddy\\studybuddy\\prisma\\migrations\\migration_lock.toml"
+2025-09-18T22:16:04.975766Z  INFO scan_sources: tailwindcss_oxide::scanner: Discovering "C:\\DevProjects\\StudyBuddy\\studybuddy\\prisma\\schema.prisma"
+2025-09-18T22:16:04.975884Z  INFO scan_sources: tailwindcss_oxide::scanner: Discovering "C:\\DevProjects\\StudyBuddy\\studybuddy\\public"
+2025-09-18T22:16:04.976159Z  INFO scan_sources: tailwindcss_oxide::scanner: Discovering "C:\\DevProjects\\StudyBuddy\\studybuddy\\public\\file.svg"
+2025-09-18T22:16:04.976227Z  INFO scan_sources: tailwindcss_oxide::scanner: Discovering "C:\\DevProjects\\StudyBuddy\\studybuddy\\public\\globe.svg"
+2025-09-18T22:16:04.976285Z  INFO scan_sources: tailwindcss_oxide::scanner: Discovering "C:\\DevProjects\\StudyBuddy\\studybuddy\\public\\next.svg"
+2025-09-18T22:16:04.976343Z  INFO scan_sources: tailwindcss_oxide::scanner: Discovering "C:\\DevProjects\\StudyBuddy\\studybuddy\\public\\vercel.svg"
+2025-09-18T22:16:04.976397Z  INFO scan_sources: tailwindcss_oxide::scanner: Discovering "C:\\DevProjects\\StudyBuddy\\studybuddy\\public\\window.svg"
+2025-09-18T22:16:04.976489Z  INFO scan_sources: tailwindcss_oxide::scanner: Discovering "C:\\DevProjects\\StudyBuddy\\studybuddy\\README.md"
+2025-09-18T22:16:04.976595Z  INFO scan_sources: tailwindcss_oxide::scanner: Discovering "C:\\DevProjects\\StudyBuddy\\studybuddy\\src"
+2025-09-18T22:16:04.976727Z  INFO scan_sources: tailwindcss_oxide::scanner: Discovering "C:\\DevProjects\\StudyBuddy\\studybuddy\\src\\app"
+2025-09-18T22:16:04.976851Z  INFO scan_sources: tailwindcss_oxide::scanner: Discovering "C:\\DevProjects\\StudyBuddy\\studybuddy\\src\\app\\api"
+2025-09-18T22:16:04.977008Z  INFO scan_sources: tailwindcss_oxide::scanner: Discovering "C:\\DevProjects\\StudyBuddy\\studybuddy\\src\\app\\api\\auth"
+2025-09-18T22:16:04.977133Z  INFO scan_sources: tailwindcss_oxide::scanner: Discovering "C:\\DevProjects\\StudyBuddy\\studybuddy\\src\\app\\api\\auth\\[...nextauth]"
+2025-09-18T22:16:04.977236Z  INFO scan_sources: tailwindcss_oxide::scanner: Discovering "C:\\DevProjects\\StudyBuddy\\studybuddy\\src\\app\\api\\auth\\[...nextauth]\\route.ts"
+2025-09-18T22:16:04.977343Z  INFO scan_sources: tailwindcss_oxide::scanner: Discovering "C:\\DevProjects\\StudyBuddy\\studybuddy\\src\\app\\dashboard"
+2025-09-18T22:16:04.977433Z  INFO scan_sources: tailwindcss_oxide::scanner: Discovering "C:\\DevProjects\\StudyBuddy\\studybuddy\\src\\app\\dashboard\\page.tsx"
+2025-09-18T22:16:04.977521Z  INFO scan_sources: tailwindcss_oxide::scanner: Discovering "C:\\DevProjects\\StudyBuddy\\studybuddy\\src\\app\\globals.css"
+2025-09-18T22:16:04.977565Z  INFO scan_sources: tailwindcss_oxide::scanner: Discovering "C:\\DevProjects\\StudyBuddy\\studybuddy\\src\\app\\layout.tsx"
+2025-09-18T22:16:04.977607Z  INFO scan_sources: tailwindcss_oxide::scanner: Discovering "C:\\DevProjects\\StudyBuddy\\studybuddy\\src\\app\\page.tsx"
+2025-09-18T22:16:04.977681Z  INFO scan_sources: tailwindcss_oxide::scanner: Discovering "C:\\DevProjects\\StudyBuddy\\studybuddy\\src\\app\\test"
+2025-09-18T22:16:04.977784Z  INFO scan_sources: tailwindcss_oxide::scanner: Discovering "C:\\DevProjects\\StudyBuddy\\studybuddy\\src\\app\\test\\page.tsx"
+2025-09-18T22:16:04.977881Z  INFO scan_sources: tailwindcss_oxide::scanner: Discovering "C:\\DevProjects\\StudyBuddy\\studybuddy\\src\\components"
+2025-09-18T22:16:04.977998Z  INFO scan_sources: tailwindcss_oxide::scanner: Discovering "C:\\DevProjects\\StudyBuddy\\studybuddy\\src\\components\\ui"
+2025-09-18T22:16:04.978092Z  INFO scan_sources: tailwindcss_oxide::scanner: Discovering "C:\\DevProjects\\StudyBuddy\\studybuddy\\src\\components\\ui\\badge.tsx"
+2025-09-18T22:16:04.978137Z  INFO scan_sources: tailwindcss_oxide::scanner: Discovering "C:\\DevProjects\\StudyBuddy\\studybuddy\\src\\components\\ui\\button.tsx"
+2025-09-18T22:16:04.978179Z  INFO scan_sources: tailwindcss_oxide::scanner: Discovering "C:\\DevProjects\\StudyBuddy\\studybuddy\\src\\components\\ui\\card.tsx"
+2025-09-18T22:16:04.978222Z  INFO scan_sources: tailwindcss_oxide::scanner: Discovering "C:\\DevProjects\\StudyBuddy\\studybuddy\\src\\components\\ui\\dialog.tsx"
+2025-09-18T22:16:04.978268Z  INFO scan_sources: tailwindcss_oxide::scanner: Discovering "C:\\DevProjects\\StudyBuddy\\studybuddy\\src\\components\\ui\\dropdown-menu.tsx"
+2025-09-18T22:16:04.978319Z  INFO scan_sources: tailwindcss_oxide::scanner: Discovering "C:\\DevProjects\\StudyBuddy\\studybuddy\\src\\components\\ui\\input.tsx"
+2025-09-18T22:16:04.978362Z  INFO scan_sources: tailwindcss_oxide::scanner: Discovering "C:\\DevProjects\\StudyBuddy\\studybuddy\\src\\components\\ui\\login-btn.tsx"
+2025-09-18T22:16:04.978407Z  INFO scan_sources: tailwindcss_oxide::scanner: Discovering "C:\\DevProjects\\StudyBuddy\\studybuddy\\src\\components\\ui\\logout-btn.tsx"
+2025-09-18T22:16:04.978450Z  INFO scan_sources: tailwindcss_oxide::scanner: Discovering "C:\\DevProjects\\StudyBuddy\\studybuddy\\src\\components\\ui\\SettingsButton.tsx"
+2025-09-18T22:16:04.978514Z  INFO scan_sources: tailwindcss_oxide::scanner: Discovering "C:\\DevProjects\\StudyBuddy\\studybuddy\\src\\components\\ui\\textarea.tsx"
+2025-09-18T22:16:04.978559Z  INFO scan_sources: tailwindcss_oxide::scanner: Discovering "C:\\DevProjects\\StudyBuddy\\studybuddy\\src\\components\\ui\\ThemeToggle.tsx"
+2025-09-18T22:16:04.978662Z  INFO scan_sources: tailwindcss_oxide::scanner: Discovering "C:\\DevProjects\\StudyBuddy\\studybuddy\\src\\lib"
+2025-09-18T22:16:04.978754Z  INFO scan_sources: tailwindcss_oxide::scanner: Discovering "C:\\DevProjects\\StudyBuddy\\studybuddy\\src\\lib\\prisma.ts"
+2025-09-18T22:16:04.978799Z  INFO scan_sources: tailwindcss_oxide::scanner: Discovering "C:\\DevProjects\\StudyBuddy\\studybuddy\\src\\lib\\utils.ts"
+2025-09-18T22:16:04.978891Z  INFO scan_sources: tailwindcss_oxide::scanner: Discovering "C:\\DevProjects\\StudyBuddy\\studybuddy\\tailwind.config.ts"
+2025-09-18T22:16:04.978940Z  INFO scan_sources: tailwindcss_oxide::scanner: Discovering "C:\\DevProjects\\StudyBuddy\\studybuddy\\tsconfig.json"
+2025-09-18T22:16:04.979022Z  INFO scan_sources: tailwindcss_oxide::scanner: exit
+2025-09-18T22:16:04.979029Z  INFO extract_candidates: tailwindcss_oxide::scanner: enter
+2025-09-18T22:16:04.979036Z  INFO extract_candidates:read_all_files: tailwindcss_oxide::scanner: enter
+2025-09-18T22:16:04.979038Z  INFO extract_candidates:read_all_files: tailwindcss_oxide::scanner: Reading 37 file(s)
+2025-09-18T22:16:04.979765Z  INFO tailwindcss_oxide::scanner: Reading "C:\\DevProjects\\StudyBuddy\\studybuddy\\src\\app\\layout.tsx"
+2025-09-18T22:16:04.979765Z  INFO tailwindcss_oxide::scanner: Reading "C:\\DevProjects\\StudyBuddy\\studybuddy\\src\\app\\page.tsx"
+2025-09-18T22:16:04.979825Z  INFO tailwindcss_oxide::scanner: Reading "C:\\DevProjects\\StudyBuddy\\studybuddy\\src\\app\\test\\page.tsx"
+2025-09-18T22:16:04.979840Z  INFO tailwindcss_oxide::scanner: Reading "C:\\DevProjects\\StudyBuddy\\studybuddy\\src\\components\\ui\\ThemeToggle.tsx"
+2025-09-18T22:16:04.979847Z  INFO tailwindcss_oxide::scanner: Reading "C:\\DevProjects\\StudyBuddy\\studybuddy\\src\\components\\ui\\card.tsx"
+2025-09-18T22:16:04.979886Z  INFO tailwindcss_oxide::scanner: Reading "C:\\DevProjects\\StudyBuddy\\studybuddy\\src\\components\\ui\\logout-btn.tsx"
+2025-09-18T22:16:04.979894Z  INFO tailwindcss_oxide::scanner: Reading "C:\\DevProjects\\StudyBuddy\\studybuddy\\src\\components\\ui\\input.tsx"
+2025-09-18T22:16:04.979904Z  INFO tailwindcss_oxide::scanner: Reading "C:\\DevProjects\\StudyBuddy\\studybuddy\\src\\components\\ui\\badge.tsx"
+2025-09-18T22:16:04.979913Z  INFO tailwindcss_oxide::scanner: Reading "C:\\DevProjects\\StudyBuddy\\studybuddy\\prisma\\schema.prisma"
+2025-09-18T22:16:04.979949Z  INFO tailwindcss_oxide::scanner: Reading "C:\\DevProjects\\StudyBuddy\\studybuddy\\src\\lib\\utils.ts"
+2025-09-18T22:16:04.979981Z  INFO tailwindcss_oxide::scanner: Reading "C:\\DevProjects\\StudyBuddy\\studybuddy\\src\\components\\ui\\login-btn.tsx"
+2025-09-18T22:16:04.979927Z  INFO tailwindcss_oxide::scanner: Reading "C:\\DevProjects\\StudyBuddy\\studybuddy\\src\\app\\dashboard\\page.tsx"
+2025-09-18T22:16:04.980026Z  INFO tailwindcss_oxide::scanner: Reading "C:\\DevProjects\\StudyBuddy\\studybuddy\\tailwind.config.ts"
+2025-09-18T22:16:04.980012Z  INFO tailwindcss_oxide::scanner: Reading "C:\\DevProjects\\StudyBuddy\\studybuddy\\src\\components\\ui\\dialog.tsx"
+2025-09-18T22:16:04.980014Z  INFO tailwindcss_oxide::scanner: Reading "C:\\DevProjects\\StudyBuddy\\studybuddy\\src\\components\\ui\\textarea.tsx"
+2025-09-18T22:16:04.980015Z  INFO tailwindcss_oxide::scanner: Reading "C:\\DevProjects\\StudyBuddy\\studybuddy\\src\\components\\ui\\button.tsx"
+2025-09-18T22:16:04.980055Z  INFO tailwindcss_oxide::scanner: Reading "C:\\DevProjects\\StudyBuddy\\studybuddy\\package.json"
+2025-09-18T22:16:04.980009Z  INFO tailwindcss_oxide::scanner: Reading "C:\\DevProjects\\StudyBuddy\\studybuddy\\auth.ts"
+2025-09-18T22:16:04.980069Z  INFO tailwindcss_oxide::scanner: Reading "C:\\DevProjects\\StudyBuddy\\studybuddy\\src\\components\\ui\\dropdown-menu.tsx"
+2025-09-18T22:16:04.980086Z  INFO tailwindcss_oxide::scanner: Reading "C:\\DevProjects\\StudyBuddy\\studybuddy\\src\\components\\ui\\SettingsButton.tsx"
+2025-09-18T22:16:04.980111Z  INFO tailwindcss_oxide::scanner: Reading "C:\\DevProjects\\StudyBuddy\\studybuddy\\next.config.ts"
+2025-09-18T22:16:04.980103Z  INFO tailwindcss_oxide::scanner: Reading "C:\\DevProjects\\StudyBuddy\\studybuddy\\prisma\\migrations\\migration_lock.toml"
+2025-09-18T22:16:04.980138Z  INFO tailwindcss_oxide::scanner: Reading "C:\\DevProjects\\StudyBuddy\\studybuddy\\prisma\\migrations\\20250912005529_init_db\\migration.sql"
+2025-09-18T22:16:04.980169Z  INFO tailwindcss_oxide::scanner: Reading "C:\\DevProjects\\StudyBuddy\\studybuddy\\tsconfig.json"
+2025-09-18T22:16:04.980178Z  INFO tailwindcss_oxide::scanner: Reading "C:\\DevProjects\\StudyBuddy\\studybuddy\\src\\app\\api\\auth\\[...nextauth]\\route.ts"
+2025-09-18T22:16:04.980206Z  INFO tailwindcss_oxide::scanner: Reading "C:\\DevProjects\\StudyBuddy\\studybuddy\\postcss.config.mjs"
+2025-09-18T22:16:04.987508Z  INFO tailwindcss_oxide::scanner: Reading "C:\\DevProjects\\StudyBuddy\\studybuddy\\public\\file.svg"
+2025-09-18T22:16:04.987519Z  INFO tailwindcss_oxide::scanner: Reading "C:\\DevProjects\\StudyBuddy\\studybuddy\\public\\vercel.svg"
+2025-09-18T22:16:04.987731Z  INFO tailwindcss_oxide::scanner: Reading "C:\\DevProjects\\StudyBuddy\\studybuddy\\components.json"
+2025-09-18T22:16:04.987950Z  INFO tailwindcss_oxide::scanner: Reading "C:\\DevProjects\\StudyBuddy\\studybuddy\\LICENSE"
+2025-09-18T22:16:04.987989Z  INFO tailwindcss_oxide::scanner: Reading "C:\\DevProjects\\StudyBuddy\\studybuddy\\public\\globe.svg"
+2025-09-18T22:16:04.988153Z  INFO tailwindcss_oxide::scanner: Reading "C:\\DevProjects\\StudyBuddy\\studybuddy\\public\\window.svg"
+2025-09-18T22:16:04.988368Z  INFO tailwindcss_oxide::scanner: Reading "C:\\DevProjects\\StudyBuddy\\studybuddy\\docker-compose.yml"
+2025-09-18T22:16:04.989479Z  INFO tailwindcss_oxide::scanner: Reading "C:\\DevProjects\\StudyBuddy\\studybuddy\\src\\lib\\prisma.ts"
+2025-09-18T22:16:04.989844Z  INFO tailwindcss_oxide::scanner: Reading "C:\\DevProjects\\StudyBuddy\\studybuddy\\eslint.config.mjs"
+2025-09-18T22:16:04.989869Z  INFO tailwindcss_oxide::scanner: Reading "C:\\DevProjects\\StudyBuddy\\studybuddy\\public\\next.svg"
+2025-09-18T22:16:04.990347Z  INFO tailwindcss_oxide::scanner: Reading "C:\\DevProjects\\StudyBuddy\\studybuddy\\README.md"
+2025-09-18T22:16:04.990422Z  INFO extract_candidates:read_all_files: tailwindcss_oxide::scanner: exit
+2025-09-18T22:16:04.990435Z  INFO extract_candidates:parse_all_blobs: tailwindcss_oxide::scanner: enter
+2025-09-18T22:16:04.990441Z  INFO extract_candidates:parse_all_blobs:extract: tailwindcss_oxide::scanner: enter
+2025-09-18T22:16:04.991675Z  INFO extract_candidates:parse_all_blobs:extract: tailwindcss_oxide::scanner: exit
+2025-09-18T22:16:04.991692Z  INFO extract_candidates:parse_all_blobs: tailwindcss_oxide::scanner: exit
+2025-09-18T22:16:04.991699Z  INFO extract_candidates:read_all_files: tailwindcss_oxide::scanner: enter
+2025-09-18T22:16:04.991702Z  INFO extract_candidates:read_all_files: tailwindcss_oxide::scanner: Reading 1 file(s)
+2025-09-18T22:16:04.991790Z  INFO extract_candidates:read_all_files: tailwindcss_oxide::scanner: Reading "C:\\DevProjects\\StudyBuddy\\studybuddy\\src\\app\\globals.css"
+2025-09-18T22:16:04.991796Z  INFO extract_candidates:read_all_files: tailwindcss_oxide::scanner: exit
+2025-09-18T22:16:04.991799Z  INFO extract_candidates:extract_css_variables: tailwindcss_oxide::scanner: enter
+2025-09-18T22:16:04.991801Z  INFO extract_candidates:extract_css_variables:extract: tailwindcss_oxide::scanner: enter
+2025-09-18T22:16:04.992444Z  INFO extract_candidates:extract_css_variables:extract: tailwindcss_oxide::scanner: exit
+2025-09-18T22:16:04.992456Z  INFO extract_candidates:extract_css_variables: tailwindcss_oxide::scanner: exit
+2025-09-18T22:16:04.994451Z  INFO extract_candidates: tailwindcss_oxide::scanner: exit
+2025-09-18T22:16:04.994808Z  INFO get_files: tailwindcss_oxide::scanner: enter
+2025-09-18T22:16:04.994817Z  INFO get_files:scan_sources: tailwindcss_oxide::scanner: enter
+2025-09-18T22:16:04.996184Z  INFO get_files:scan_sources: tailwindcss_oxide::scanner: Discovering "C:\\DevProjects\\StudyBuddy\\studybuddy\\prisma"
+2025-09-18T22:16:04.996317Z  INFO get_files:scan_sources: tailwindcss_oxide::scanner: Discovering "C:\\DevProjects\\StudyBuddy\\studybuddy\\prisma\\migrations"
+2025-09-18T22:16:04.996441Z  INFO get_files:scan_sources: tailwindcss_oxide::scanner: Discovering "C:\\DevProjects\\StudyBuddy\\studybuddy\\prisma\\migrations\\20250912005529_init_db"
+2025-09-18T22:16:04.996687Z  INFO get_files:scan_sources: tailwindcss_oxide::scanner: Discovering "C:\\DevProjects\\StudyBuddy\\studybuddy\\public"
+2025-09-18T22:16:04.997206Z  INFO get_files:scan_sources: tailwindcss_oxide::scanner: Discovering "C:\\DevProjects\\StudyBuddy\\studybuddy\\src"
+2025-09-18T22:16:04.997345Z  INFO get_files:scan_sources: tailwindcss_oxide::scanner: Discovering "C:\\DevProjects\\StudyBuddy\\studybuddy\\src\\app"
+2025-09-18T22:16:04.997472Z  INFO get_files:scan_sources: tailwindcss_oxide::scanner: Discovering "C:\\DevProjects\\StudyBuddy\\studybuddy\\src\\app\\api"
+2025-09-18T22:16:04.997601Z  INFO get_files:scan_sources: tailwindcss_oxide::scanner: Discovering "C:\\DevProjects\\StudyBuddy\\studybuddy\\src\\app\\api\\auth"
+2025-09-18T22:16:04.997724Z  INFO get_files:scan_sources: tailwindcss_oxide::scanner: Discovering "C:\\DevProjects\\StudyBuddy\\studybuddy\\src\\app\\api\\auth\\[...nextauth]"
+2025-09-18T22:16:04.997912Z  INFO get_files:scan_sources: tailwindcss_oxide::scanner: Discovering "C:\\DevProjects\\StudyBuddy\\studybuddy\\src\\app\\dashboard"
+2025-09-18T22:16:04.998145Z  INFO get_files:scan_sources: tailwindcss_oxide::scanner: Discovering "C:\\DevProjects\\StudyBuddy\\studybuddy\\src\\app\\test"
+2025-09-18T22:16:04.998308Z  INFO get_files:scan_sources: tailwindcss_oxide::scanner: Discovering "C:\\DevProjects\\StudyBuddy\\studybuddy\\src\\components"
+2025-09-18T22:16:04.998429Z  INFO get_files:scan_sources: tailwindcss_oxide::scanner: Discovering "C:\\DevProjects\\StudyBuddy\\studybuddy\\src\\components\\ui"
+2025-09-18T22:16:04.998840Z  INFO get_files:scan_sources: tailwindcss_oxide::scanner: Discovering "C:\\DevProjects\\StudyBuddy\\studybuddy\\src\\lib"
+2025-09-18T22:16:04.999058Z  INFO get_files:scan_sources: tailwindcss_oxide::scanner: exit
+2025-09-18T22:16:04.999684Z  INFO get_files: tailwindcss_oxide::scanner: exit
+2025-09-18T22:16:04.999848Z  INFO get_globs: tailwindcss_oxide::scanner: enter
+2025-09-18T22:16:04.999853Z  INFO get_globs:scan_sources: tailwindcss_oxide::scanner: enter
+2025-09-18T22:16:05.001167Z  INFO get_globs:scan_sources: tailwindcss_oxide::scanner: Discovering "C:\\DevProjects\\StudyBuddy\\studybuddy\\prisma"
+2025-09-18T22:16:05.001308Z  INFO get_globs:scan_sources: tailwindcss_oxide::scanner: Discovering "C:\\DevProjects\\StudyBuddy\\studybuddy\\prisma\\migrations"
+2025-09-18T22:16:05.001436Z  INFO get_globs:scan_sources: tailwindcss_oxide::scanner: Discovering "C:\\DevProjects\\StudyBuddy\\studybuddy\\prisma\\migrations\\20250912005529_init_db"
+2025-09-18T22:16:05.001670Z  INFO get_globs:scan_sources: tailwindcss_oxide::scanner: Discovering "C:\\DevProjects\\StudyBuddy\\studybuddy\\public"
+2025-09-18T22:16:05.001927Z  INFO get_globs:scan_sources: tailwindcss_oxide::scanner: Discovering "C:\\DevProjects\\StudyBuddy\\studybuddy\\src"
+2025-09-18T22:16:05.002041Z  INFO get_globs:scan_sources: tailwindcss_oxide::scanner: Discovering "C:\\DevProjects\\StudyBuddy\\studybuddy\\src\\app"
+2025-09-18T22:16:05.002178Z  INFO get_globs:scan_sources: tailwindcss_oxide::scanner: Discovering "C:\\DevProjects\\StudyBuddy\\studybuddy\\src\\app\\api"
+2025-09-18T22:16:05.002308Z  INFO get_globs:scan_sources: tailwindcss_oxide::scanner: Discovering "C:\\DevProjects\\StudyBuddy\\studybuddy\\src\\app\\api\\auth"
+2025-09-18T22:16:05.002436Z  INFO get_globs:scan_sources: tailwindcss_oxide::scanner: Discovering "C:\\DevProjects\\StudyBuddy\\studybuddy\\src\\app\\api\\auth\\[...nextauth]"
+2025-09-18T22:16:05.002623Z  INFO get_globs:scan_sources: tailwindcss_oxide::scanner: Discovering "C:\\DevProjects\\StudyBuddy\\studybuddy\\src\\app\\dashboard"
+2025-09-18T22:16:05.002854Z  INFO get_globs:scan_sources: tailwindcss_oxide::scanner: Discovering "C:\\DevProjects\\StudyBuddy\\studybuddy\\src\\app\\test"
+2025-09-18T22:16:05.003019Z  INFO get_globs:scan_sources: tailwindcss_oxide::scanner: Discovering "C:\\DevProjects\\StudyBuddy\\studybuddy\\src\\components"
+2025-09-18T22:16:05.003139Z  INFO get_globs:scan_sources: tailwindcss_oxide::scanner: Discovering "C:\\DevProjects\\StudyBuddy\\studybuddy\\src\\components\\ui"
+2025-09-18T22:16:05.003545Z  INFO get_globs:scan_sources: tailwindcss_oxide::scanner: Discovering "C:\\DevProjects\\StudyBuddy\\studybuddy\\src\\lib"
+2025-09-18T22:16:05.003764Z  INFO get_globs:scan_sources: tailwindcss_oxide::scanner: exit
+2025-09-18T22:16:05.007175Z  INFO get_globs: tailwindcss_oxide::scanner: exit

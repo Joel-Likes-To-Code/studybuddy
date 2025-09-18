@@ -7,25 +7,33 @@ generator client {
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
+  directUrl = env("DIRECT_DATABASE_URL")
 }
 
 /* ---------- Auth (NextAuth) ---------- */
 
 model User {
-  id         String      @id @default(cuid())
-  email      String      @unique
-  name       String?
-  image      String?
-  createdAt  DateTime    @default(now())
-  updatedAt  DateTime    @updatedAt
+  id            String   @id @default(cuid())
+  // Make email nullable if you ever allow providers that might not return email (e.g., GitHub without user:email scope).
+  // If you will strictly enforce verified Gmail or credentials, keeping it required is fine.
+  email         String?  @unique
+  emailVerified DateTime?
+  name          String?
+  image         String?
 
-  accounts   Account[]
-  sessions   Session[]
+  // For Credentials (email/password) users; stays null for OAuth-only users
+  passwordHash  String?
+
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  accounts      Account[]
+  sessions      Session[]
 
   // Domain relations
-  notes      Note[]
-  cards      Card[]
-  reviewLogs ReviewLog[]
+  notes         Note[]
+  cards         Card[]
+  reviewLogs    ReviewLog[]
 }
 
 model Account {
@@ -42,7 +50,7 @@ model Account {
   id_token          String? @db.Text
   session_state     String?
 
-  user User @relation(fields: [userId], references: [id])
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([provider, providerAccountId])
 }
@@ -53,7 +61,15 @@ model Session {
   userId       String
   expires      DateTime
 
-  user User @relation(fields: [userId], references: [id])
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model VerificationToken {
+  identifier String
+  token      String
+  expires    DateTime
+ 
+  @@id([identifier, token])
 }
 
 /* ---------- Domain (StudyBuddy) ---------- */
@@ -62,7 +78,7 @@ model Note {
   id        String   @id @default(cuid())
   userId    String
   title     String
-  content   String   // markdown
+  content   String
   tags      String[] @default([])
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -85,6 +101,7 @@ model Card {
   type      CardType
   prompt    String  
   answer    String 
+  tags      String[] @default([])
   dueAt     DateTime @default(now())
   interval  Int      @default(1)       
   ease      Int      @default(250)    
