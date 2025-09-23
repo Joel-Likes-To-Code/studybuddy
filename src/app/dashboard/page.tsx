@@ -4,16 +4,37 @@ import React, { useMemo, useState } from "react";
 
 type TabKey = "manual" | "quick";
 
-type ManualCard = {
-  id: string;
+/** What you'll POST to your API */
+export type NewCardInput = {
   front: string;
   back: string;
   tags: string[];
-  createdAt: string;
 };
+
+
+
+/** If you later want to type server-returned cards, keep this around */
+// export type Card = {
+//   id: string;
+//   front: string;
+//   back: string;
+//   tags: string[];
+//   createdAt: string;
+// };
 
 export default function DashboardPage() {
   const [activeTab, setActiveTab] = useState<TabKey>("manual");
+
+  async function saveToServer(input: NewCardInput) {
+    // TODO: replace with your real call (Prisma via /api/cards or Supabase client)
+    // Example:
+    // await fetch("/api/cards", {
+    //   method: "POST",
+    //   headers: { "Content-Type": "application/json" },
+    //   body: JSON.stringify(input),
+    // });
+    console.log("TODO: send to server:", input);
+  }
 
   return (
     <main className="max-w-5xl mx-auto p-6 space-y-6">
@@ -50,7 +71,11 @@ export default function DashboardPage() {
       </div>
 
       {/* Panels */}
-      {activeTab === "manual" ? <ManualCreator /> : <QuickPlaceholder />}
+      {activeTab === "manual" ? (
+        <ManualCreator onSave={saveToServer} />
+      ) : (
+        <QuickPlaceholder />
+      )}
     </main>
   );
 }
@@ -69,12 +94,17 @@ function QuickPlaceholder() {
   );
 }
 
-function ManualCreator() {
+function ManualCreator({
+  onSave,
+}: {
+  onSave?: (input: NewCardInput) => Promise<void> | void;
+}) {
   const [front, setFront] = useState("");
   const [back, setBack] = useState("");
   const [isFlipped, setIsFlipped] = useState(false);
   const [tagInput, setTagInput] = useState("");
   const [tags, setTags] = useState<string[]>([]);
+  const [saving, setSaving] = useState(false);
 
   const canSave = useMemo(
     () => front.trim().length > 0 && back.trim().length > 0,
@@ -89,45 +119,45 @@ function ManualCreator() {
       .map((t) => t.trim())
       .filter(Boolean);
     if (!parts.length) return;
-    const next = Array.from(new Set([...tags, ...parts.map((t) => sanitizeTag(t))]));
+    const next = Array.from(
+      new Set([...tags, ...parts.map((t) => sanitizeTag(t))])
+    );
     setTags(next);
     setTagInput("");
   };
 
-  const removeTag = (t: string) => setTags((prev) => prev.filter((x) => x !== t));
+  const removeTag = (t: string) =>
+    setTags((prev) => prev.filter((x) => x !== t));
 
-  const onSave = () => {
-    if (!canSave) return;
+  const handleSave = async () => {
+    if (!canSave || saving) return;
 
-    const record: ManualCard = {
-      id: cryptoRandomId(),
+    const payload: NewCardInput = {
       front: front.trim(),
       back: back.trim(),
       tags,
-      createdAt: new Date().toISOString(),
     };
 
     try {
-      const key = "studybuddy.manual.cards";
-      const raw = localStorage.getItem(key);
-      const prev = (raw ? (JSON.parse(raw) as unknown) : []) as unknown;
+      setSaving(true);
+      if (onSave) {
+        await onSave(payload);
+      } else {
+        // Fallback: just log so you can see the payload while wiring your API
+        console.log("New card payload:", payload);
+      }
 
-      const prevArray: ManualCard[] = Array.isArray(prev)
-        ? (prev as ManualCard[])
-        : [];
-
-      localStorage.setItem(key, JSON.stringify([record, ...prevArray]));
-
-      // reset
+      // reset form after a successful save
       setFront("");
       setBack("");
       setTags([]);
       setIsFlipped(false);
       setTagInput("");
-      alert("Card saved locally.");
     } catch (e) {
-      console.error(e);
-      alert("Failed to save card.");
+      console.error("Failed to save card:", e);
+      // Optional: show a toast/error UI here
+    } finally {
+      setSaving(false);
     }
   };
 
@@ -141,10 +171,15 @@ function ManualCreator() {
       <div className="grid gap-6 lg:grid-cols-[1fr_320px]">
         {/* Flip card */}
         <div className="flex items-center justify-center">
-          <FlipCard isFlipped={isFlipped} onToggle={() => setIsFlipped((v) => !v)}>
+          <FlipCard
+            isFlipped={isFlipped}
+            onToggle={() => setIsFlipped((v) => !v)}
+          >
             {/* Front */}
             <div className="h-full w-full p-4">
-              <div className="text-xs font-medium text-[var(--muted-foreground)] mb-2">Front</div>
+              <div className="text-xs font-medium text-[var(--muted-foreground)] mb-2">
+                Front
+              </div>
               <textarea
                 aria-label="Front text"
                 placeholder="Type the prompt/question..."
@@ -152,12 +187,16 @@ function ManualCreator() {
                 onChange={(e) => setFront(e.target.value)}
                 className="w-full h-[220px] resize-none rounded-md border border-[var(--border)] bg-[var(--card)] text-[var(--card-foreground)] p-3 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--ring)] text-sm"
               />
-              <div className="mt-3 text-xs text-[var(--muted-foreground)]">Click the right edge to flip →</div>
+              <div className="mt-3 text-xs text-[var(--muted-foreground)]">
+                Click the right edge to flip →
+              </div>
             </div>
 
             {/* Back */}
             <div className="h-full w-full p-4">
-              <div className="text-xs font-medium text-[var(--muted-foreground)] mb-2">Back</div>
+              <div className="text-xs font-medium text-[var(--muted-foreground)] mb-2">
+                Back
+              </div>
               <textarea
                 aria-label="Back text"
                 placeholder="Type the answer..."
@@ -165,7 +204,9 @@ function ManualCreator() {
                 onChange={(e) => setBack(e.target.value)}
                 className="w-full h-[220px] resize-none rounded-md border border-[var(--border)] bg-[var(--card)] text-[var(--card-foreground)] p-3 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--ring)] text-sm"
               />
-              <div className="mt-3 text-xs text-[var(--muted-foreground)]">Click the left edge to flip ←</div>
+              <div className="mt-3 text-xs text-[var(--muted-foreground)]">
+                Click the left edge to flip ←
+              </div>
             </div>
           </FlipCard>
         </div>
@@ -190,7 +231,6 @@ function ManualCreator() {
                       className="-mr-0.5 ml-1 rounded-full px-1 text-[var(--muted-foreground)] hover:bg-[var(--muted)]/70"
                       onClick={() => removeTag(t)}
                     >
-                      ×
                     </button>
                   </span>
                 ))}
@@ -209,21 +249,23 @@ function ManualCreator() {
                 className="mt-2 w-full rounded-md border border-[var(--border)] bg-[var(--card)] text-[var(--card-foreground)] p-2 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--ring)]"
               />
             </div>
-            <p className="mt-2 text-xs text-[var(--muted-foreground)]">Tags help group related cards.</p>
+            <p className="mt-2 text-xs text-[var(--muted-foreground)]">
+              Tags help group related cards.
+            </p>
           </div>
 
           <div className="pt-2 flex items-center gap-2">
             <button
               type="button"
-              onClick={onSave}
-              disabled={!canSave}
+              onClick={handleSave}
+              disabled={!canSave || saving}
               className={`px-4 py-2 rounded-md text-[var(--primary-foreground)] text-sm transition-opacity ${
-                canSave
+                canSave && !saving
                   ? "bg-[var(--primary)] hover:opacity-90"
                   : "bg-[var(--primary)] opacity-50 cursor-not-allowed"
               }`}
             >
-              Save Card
+              {saving ? "Saving…" : "Save Card"}
             </button>
             <button
               type="button"
@@ -241,6 +283,10 @@ function ManualCreator() {
           </div>
         </aside>
       </div>
+      <section className="text-sm text-[var(--muted-foreground)]">
+      
+
+      </section>
     </section>
   );
 }
@@ -279,9 +325,7 @@ function FlipCard({
         />
 
         {/* Face */}
-        <div className="absolute inset-0 [backface-visibility:hidden]">
-          {front}
-        </div>
+        <div className="absolute inset-0 [backface-visibility:hidden]">{front}</div>
         {/* Back */}
         <div className="absolute inset-0 [transform:rotateY(180deg)] [backface-visibility:hidden]">
           {back}
@@ -297,27 +341,4 @@ function sanitizeTag(t: string) {
     .replace(/[^a-z0-9\-\_\s]/g, "")
     .trim()
     .replace(/\s+/g, "-");
-}
-
-function cryptoRandomId(): string {
-  // Prefer the Web Crypto API if available
-  const c = typeof globalThis !== "undefined" ? (globalThis as { crypto?: Crypto }).crypto : undefined;
-
-  if (c && typeof (c as Crypto & { randomUUID?: () => string }).randomUUID === "function") {
-    return (c as Crypto & { randomUUID: () => string }).randomUUID();
-  }
-
-  // Fallback: UUID v4 via getRandomValues
-  if (c && typeof c.getRandomValues === "function") {
-    const bytes = new Uint8Array(16);
-    c.getRandomValues(bytes);
-    // RFC 4122 v4
-    bytes[6] = (bytes[6] & 0x0f) | 0x40; // version
-    bytes[8] = (bytes[8] & 0x3f) | 0x80; // variant
-    const hex = Array.from(bytes, (b) => b.toString(16).padStart(2, "0")).join("");
-    return `${hex.slice(0, 8)}-${hex.slice(8, 12)}-${hex.slice(12, 16)}-${hex.slice(16, 20)}-${hex.slice(20)}`;
-  }
-
-  // Last resort (unique-ish)
-  return Math.random().toString(36).slice(2) + Date.now().toString(36);
 }

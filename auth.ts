@@ -8,5 +8,10 @@ const prisma = new PrismaClient();
 
 export const { auth, handlers, signIn, signOut } = NextAuth({
   providers: [GitHub, Google],
-  adapter: PrismaAdapter(prisma)
+  adapter: PrismaAdapter(prisma),
+  callbacks: {
+    authorized: async ({ auth }) => {
+      return !!auth
+    },
+  },
 })
