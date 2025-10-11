@@ -5,8 +5,20 @@ import { PrismaAdapter } from "@auth/prisma-adapter";
 import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
+ 
 
 export const { auth, handlers, signIn, signOut } = NextAuth({
   providers: [GitHub, Google],
-  adapter: PrismaAdapter(prisma)
+  adapter: PrismaAdapter(prisma),
+  callbacks: {
+    authorized: async ({ auth }) => {
+      return !!auth
+        },
+
+    session({ session, user }) {
+      session.user.id = user.id
+      return session
+    },
+    },
+    secret: process.env.AUTH_SECRET,
 })

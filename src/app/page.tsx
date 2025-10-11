@@ -1,13 +1,21 @@
-export default function Home() {
+import { auth } from "@/auth";
+
+const Page = async () => {
+  const session = await auth();
   return (
     <main className="min-h-dvh grid place-items-center p-6">
       <div className="max-w-2xl w-full text-center space-y-6">
         <h1 className="text-4xl font-bold">StudyBuddy</h1>
-        <p className="text-gray-600">Design first. Wire auth later.</p>
-        <a href="/dashboard" className="inline-block px-5 py-2.5 rounded bg-black text-white">
-          Continue to sign in
-        </a>
+        {session?.user ? (
+          <p className="text-lg">
+            Welcome back, <span className="font-medium">{session.user.name ?? session.user.email}</span>!
+          </p>
+        ) : (
+          <p className="text-lg">Welcome to StudyBuddy! Please sign in to continue.</p>
+        )}
       </div>
     </main>
   );
 }
+
+export default Page;

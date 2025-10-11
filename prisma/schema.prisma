@@ -14,8 +14,6 @@ datasource db {
 
 model User {
   id            String   @id @default(cuid())
-  // Make email nullable if you ever allow providers that might not return email (e.g., GitHub without user:email scope).
-  // If you will strictly enforce verified Gmail or credentials, keeping it required is fine.
   email         String?  @unique
   emailVerified DateTime?
   name          String?
@@ -89,16 +87,12 @@ model Note {
   @@index([userId, createdAt])
 }
 
-enum CardType {
-  CLOZE
-  QA
-}
+
 
 model Card {
   id        String   @id @default(cuid())
   userId    String
   noteId    String?
-  type      CardType
   prompt    String  
   answer    String 
   tags      String[] @default([])
@@ -116,6 +110,8 @@ model Card {
 
   @@index([userId, dueAt])
 }
+
+
 
 enum Rating {
   AGAIN
