@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
-import "./globals.css";
+import "@/src/app/globals.css";
 import Link from "next/link";
 import SettingsButton from "../components/ui/SettingsButton";
 import SignInButtons from "../components/ui/SignInButtons";

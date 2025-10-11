@@ -1,7 +1,7 @@
 // app/(auth)/actions.ts
 "use server";
 
-import { signIn, signOut } from "../../../../../auth";
+import { signIn, signOut } from "@/auth";
 
 /**
  * Sign the user in and redirect to the dashboard.

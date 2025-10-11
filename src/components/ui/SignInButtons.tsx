@@ -1,4 +1,4 @@
-import { auth} from "../../../auth";
+import { auth} from "@/auth";
 import {signInAction, signOutAction} from "../../app/api/auth/[...nextauth]/actions";
 
 
