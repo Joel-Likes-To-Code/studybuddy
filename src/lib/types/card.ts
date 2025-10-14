@@ -3,7 +3,7 @@ export type Card = { id: string; prompt: string; answer: string; tags: string[];
 export enum TabKey {
   Manual = "manual",
   Quick = "quick",
-  Cards = "cards",
+  Cards = "my Cards",
 }
 
 export type NewCardInput = {

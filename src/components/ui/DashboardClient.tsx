@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useCallback, useState, useMemo } from "react";
+import React, { useCallback, useState, useMemo, useRef } from "react";
 import CardDisplay from "./CardDisplay";
 import { NewCardInput, TabKey, CardDTO } from "@/src/lib/types/card";
 import {
@@ -24,30 +24,30 @@ export default function DashboardClient({
   const [editingCard, setEditingCard] = useState<CardDTO | null>(null);
   const [deletingIds, setDeletingIds] = useState<Set<string>>(new Set());
 
-  // Handlers 
-const saveToServer = useCallback(async (input: NewCardInput) => {
-  const tempId = `temp-${crypto.randomUUID()}`;
-  const tempCard: CardDTO = {
-    id: tempId,
-    prompt: input.prompt,
-    answer: input.answer,
-    tags: input.tags,
-    createdAt: new Date().toISOString(),
-  };
+  // Handlers
+  const saveToServer = useCallback(async (input: NewCardInput) => {
+    const tempId = `temp-${crypto.randomUUID()}`;
+    const tempCard: CardDTO = {
+      id: tempId,
+      prompt: input.prompt,
+      answer: input.answer,
+      tags: input.tags,
+      createdAt: new Date().toISOString(),
+    };
 
-  // optimistic insert
-  setCards(prev => [tempCard, ...prev]);
+    // optimistic insert
+    setCards((prev) => [tempCard, ...prev]);
 
-  try {
-    const saved = await createCard(input);
-    // replace temp with real
-    setCards(prev => prev.map(c => (c.id === tempId ? saved : c)));
-  } catch (err) {
-    console.error("Create failed:", err);
-    // rollback
-    setCards(prev => prev.filter(c => c.id !== tempId));
-  }
-}, []);
+    try {
+      const saved = await createCard(input);
+      // replace temp with real
+      setCards((prev) => prev.map((c) => (c.id === tempId ? saved : c)));
+    } catch (err) {
+      console.error("Create failed:", err);
+      // rollback
+      setCards((prev) => prev.filter((c) => c.id !== tempId));
+    }
+  }, []);
 
   const openEditModal = (card: CardDTO) => {
     setEditingCard(card);
@@ -59,61 +59,51 @@ const saveToServer = useCallback(async (input: NewCardInput) => {
     setIsEditModalOpen(false);
   };
 
-const handleEditSubmit = useCallback(
-  async (payload: { prompt: string; answer: string; tags: string[] }) => {
-    if (!editingCard) return;
+  const handleEditSubmit = useCallback(
+    async (payload: { prompt: string; answer: string; tags: string[] }) => {
+      if (!editingCard) return;
 
-    // 1) snapshot for rollback
-    const prevCards = cards;
+      const prevCards = cards;
 
-    // 2) optimistic UI update
-    const optimisticCard: CardDTO = {
-      ...editingCard,
-      prompt: payload.prompt,
-      answer: payload.answer,
-      tags: payload.tags,
-    };
-    setCards(prev =>
-      prev.map(c => (c.id === editingCard.id ? optimisticCard : c))
-    );
+      const optimisticCard: CardDTO = {
+        ...editingCard,
+        prompt: payload.prompt,
+        answer: payload.answer,
+        tags: payload.tags,
+      };
+      setCards((prev) =>
+        prev.map((c) => (c.id === editingCard.id ? optimisticCard : c))
+      );
 
-    // 3) close modal immediately for snappy feel
-    closeEditModal();
+      closeEditModal();
 
-    try {
-      // 4) persist to server
-      const updated = await updateCard(editingCard.id, payload);
-      // If your action returns full CardDTO, replace it;
-      // otherwise this no-op keeps the optimistic version.
-      if (updated) {
-        setCards(prev =>
-          prev.map(c => (c.id === editingCard.id ? { ...c, ...updated } : c))
-        );
+      try {
+        const updated = await updateCard(editingCard.id, payload);
+        if (updated) {
+          setCards((prev) =>
+            prev.map((c) =>
+              c.id === editingCard.id ? { ...c, ...updated } : c
+            )
+          );
+        }
+      } catch (err) {
+        console.error("Update failed:", err);
+        setCards(prevCards);
       }
-    } catch (err) {
-      console.error("Update failed:", err);
-      // 5) rollback UI
-      setCards(prevCards);
-      // (optional) show a toast and re-open modal so the user can retry
-      // openEditModal(editingCard);
-    }
     },
-    [cards, editingCard] // deps OK here
+    [cards, editingCard]
   );
 
   const handleDelete = useCallback(async (card: CardDTO) => {
-    setDeletingIds(prev => new Set(prev).add(card.id));
-    // optimistic remove
-    setCards(prev => prev.filter(c => c.id !== card.id));
+    setDeletingIds((prev) => new Set(prev).add(card.id));
+    setCards((prev) => prev.filter((c) => c.id !== card.id));
     try {
-      await deleteCard(card.id); // server action / API call
-      // success: nothing else to do
+      await deleteCard(card.id);
     } catch (err) {
       console.error("Delete failed:", err);
-      // rollback if server call fails
-      setCards(prev => [card, ...prev]); 
+      setCards((prev) => [card, ...prev]);
     } finally {
-      setDeletingIds(prev => {
+      setDeletingIds((prev) => {
         const next = new Set(prev);
         next.delete(card.id);
         return next;
@@ -124,7 +114,14 @@ const handleEditSubmit = useCallback(
   let panel: React.ReactNode;
   switch (activeTab) {
     case TabKey.Manual:
-      panel = <ManualCreator onSave={saveToServer} cards={cards} openEditModal={openEditModal} setCards={setCards} handleDelete={handleDelete} />;
+      panel = (
+        <ManualCreator
+          onSave={saveToServer}
+          cards={cards}
+          openEditModal={openEditModal}
+          handleDelete={handleDelete}
+        />
+      );
       break;
     case TabKey.Quick:
       panel = <QuickPlaceholder />;
@@ -134,9 +131,7 @@ const handleEditSubmit = useCallback(
         <CardDisplay
           cards={cards}
           limit={5}
-          onEdit={async (card) => {
-            openEditModal(card);
-          }}
+          onEdit={async (card) => openEditModal(card)}
           onDelete={handleDelete}
         />
       );
@@ -158,42 +153,23 @@ const handleEditSubmit = useCallback(
       {/* Tabs */}
       <div className="border-b border-[var(--border)]">
         <nav className="-mb-px flex gap-6" aria-label="Tabs">
-          <button
-            type="button"
-            onClick={() => setActiveTab(TabKey.Manual)}
-            className={`pb-3 text-sm font-medium outline-none border-b-2 -mb-px transition-colors ${
-              activeTab === TabKey.Manual
-                ? "border-[var(--accent)] text-[var(--foreground)]"
-                : "border-transparent text-[var(--muted-foreground)] hover:text-[var(--foreground)]"
-            }`}
-          >
-            Manual
-          </button>
-          <button
-            type="button"
-            onClick={() => setActiveTab(TabKey.Quick)}
-            className={`pb-3 text-sm font-medium outline-none border-b-2 -mb-px transition-colors ${
-              activeTab === TabKey.Quick
-                ? "border-[var(--accent)] text-[var(--foreground)]"
-                : "border-transparent text-[var(--muted-foreground)] hover:text-[var(--foreground)]"
-            }`}
-          >
-            Quick
-          </button>
-          <button
-            type="button"
-            onClick={() => setActiveTab(TabKey.Cards)}
-            className={`pb-3 text-sm font-medium outline-none border-b-2 -mb-px transition-colors ${
-              activeTab === TabKey.Cards
-                ? "border-[var(--accent)] text-[var(--foreground)]"
-                : "border-transparent text-[var(--muted-foreground)] hover:text-[var(--foreground)]"
-            }`}
-          >
-            My Cards
-          </button>
+          {Object.values(TabKey).map((tab) => (
+            <button
+              key={tab}
+              type="button"
+              onClick={() => setActiveTab(tab)}
+              className={`pb-3 text-sm font-medium outline-none border-b-2 -mb-px transition-colors ${
+                activeTab === tab
+                  ? "border-[var(--accent)] text-[var(--foreground)]"
+                  : "border-transparent text-[var(--muted-foreground)] hover:text-[var(--foreground)]"
+              }`}
+            >
+              {tab.charAt(0).toUpperCase() + tab.slice(1)}
+            </button>
+          ))}
         </nav>
       </div>
-      {/* Panels */}
+
       <section className="mt-6">{panel}</section>
 
       {isEditModalOpen && editingCard && (
@@ -232,7 +208,6 @@ function ManualCreator({
   cards?: CardDTO[];
   openEditModal: (card: CardDTO) => void;
   handleDelete: (card: CardDTO) => void;
-  setCards: React.Dispatch<React.SetStateAction<CardDTO[]>>;
 }) {
   const [prompt, setFront] = useState("");
   const [answer, setBack] = useState("");
@@ -240,32 +215,24 @@ function ManualCreator({
   const [tagInput, setTagInput] = useState("");
   const [tags, setTags] = useState<string[]>([]);
   const [saving, setSaving] = useState(false);
+  const [attemptedSave, setAttemptedSave] = useState(false);
+  const tagInputRef = useRef<HTMLInputElement>(null);
+  const tagsValid = tags.length > 0;
 
   const canSave = useMemo(
-    () => prompt.trim().length > 0 && answer.trim().length > 0,
-    [prompt, answer]
+    () => prompt.trim().length > 0 && answer.trim().length > 0 && tagsValid,
+    [prompt, answer, tagsValid]
   );
-
-  const addTagFromInput = () => {
-    const raw = tagInput.trim();
-    if (!raw) return;
-    const parts = raw
-      .split(/[,\s]+/)
-      .map((t) => t.trim())
-      .filter(Boolean);
-    if (!parts.length) return;
-    const next = Array.from(
-      new Set([...tags, ...parts.map((t) => sanitizeTag(t))])
-    );
-    setTags(next);
-    setTagInput("");
-  };
-
-  const removeTag = (t: string) =>
-    setTags((prev) => prev.filter((x) => x !== t));
-
   const handleSave = async () => {
-    if (!canSave || saving) return;
+    if (saving) return;
+
+    if (!tagsValid) {
+      setAttemptedSave(true);
+      tagInputRef.current?.focus();
+      return;
+    }
+
+    if (!canSave) return;
 
     const payload: NewCardInput = {
       prompt: prompt.trim(),
@@ -281,6 +248,7 @@ function ManualCreator({
       setBack("");
       setTags([]);
       setTagInput("");
+      setAttemptedSave(false);
     } catch (e) {
       console.error("Failed to save card:", e);
     } finally {
@@ -288,102 +256,138 @@ function ManualCreator({
     }
   };
 
-  return (
-    <section className="space-y-4">
-      <div className="flex items-center justify-between">
-        <h2 className="text-xl font-semibold">Manual Create</h2>
-      </div>
+return (
+  <section className="space-y-4">
+    {/* Two-row grid:
+         Row 1: headers (left & right) on the same line
+         Row 2: content columns (left = creator+tags, right = card list) */}
+    <div className="grid gap-6 lg:grid-cols-[1fr_360px]">
+      {/* Row 1: aligned headings */}
+      <h2 className="text-xl font-semibold self-end">Manual Create</h2>
+      <h3 className="text-xl font-semibold self-end">Recently Created Cards</h3>
 
-      {/* Two-column grid: flipcard left, tags+cards right */}
-      <div className="grid gap-6 lg:grid-cols-[1fr_320px]">
+      {/* Row 2, Col 1: Creator + Tags (top-aligned; optional sticky) */}
+      <div className="space-y-6 lg:sticky lg:top-4 self-start">
         {/* Flip card */}
-        <div className="flex items-center justify-center">
-          <FlipCard
-            isFlipped={isFlipped}
-            onToggle={() => setIsFlipped((v) => !v)}
-          >
-            {/* Front */}
-            <div className="h-full w-full p-4">
-              <div className="text-xs font-medium text-[var(--muted-foreground)] mb-2">
-                Front
-              </div>
-              <textarea
-                aria-label="Front text"
-                placeholder="Type the prompt/question..."
-                value={prompt}
-                onChange={(e) => setFront(e.target.value)}
-                className="w-full h-[220px] resize-none rounded-md border border-[var(--border)] bg-[var(--card)] text-[var(--card-foreground)] p-3 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--ring)] text-sm"
-              />
-              <div className="mt-3 text-xs text-[var(--muted-foreground)]">
-                Click the right edge to flip →
-              </div>
+        <FlipCard
+          isFlipped={isFlipped}
+          onToggle={() => setIsFlipped((v) => !v)}
+        >
+          {/* Front */}
+          <div className="h-full w-full p-4">
+            <div className="text-xs font-medium text-[var(--muted-foreground)] mb-2">
+              Front
             </div>
-
-            {/* Back */}
-            <div className="h-full w-full p-4">
-              <div className="text-xs font-medium text-[var(--muted-foreground)] mb-2">
-                Back
-              </div>
-              <textarea
-                aria-label="Back text"
-                placeholder="Type the answer..."
-                value={answer}
-                onChange={(e) => setBack(e.target.value)}
-                className="w-full h-[220px] resize-none rounded-md border border-[var(--border)] bg-[var(--card)] text-[var(--card-foreground)] p-3 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--ring)] text-sm"
-              />
-              <div className="mt-3 text-xs text-[var(--muted-foreground)]">
-                Click the left edge to flip ←
-              </div>
+            <textarea
+              aria-label="Front text"
+              placeholder="Type the prompt/question..."
+              value={prompt}
+              onChange={(e) => setFront(e.target.value)}
+              className="w-full h-[220px] resize-none rounded-md border border-[var(--border)] bg-[var(--card)] text-[var(--card-foreground)] p-3 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--ring)] text-sm"
+            />
+            <div className="mt-3 text-xs text-[var(--muted-foreground)]">
+              Click the right edge to flip →
             </div>
-          </FlipCard>
-        </div>
+          </div>
 
-        {/* Right column: tags + recent cards */}
-        <aside className="space-y-6">
-          {/* Tags section */}
+          {/* Back */}
+          <div className="h-full w-full p-4">
+            <div className="text-xs font-medium text-[var(--muted-foreground)] mb-2">
+              Back
+            </div>
+            <textarea
+              aria-label="Back text"
+              placeholder="Type the answer..."
+              value={answer}
+              onChange={(e) => setBack(e.target.value)}
+              className="w-full h-[220px] resize-none rounded-md border border-[var(--border)] bg-[var(--card)] text-[var(--card-foreground)] p-3 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--ring)] text-sm"
+            />
+            <div className="mt-3 text-xs text-[var(--muted-foreground)]">
+              Click the left edge to flip ←
+            </div>
+          </div>
+        </FlipCard>
+
+        {/* Tags + Actions (group keeps Save-hover glow) */}
+        <div className="space-y-4 group">
           <div>
             <label htmlFor="tags" className="block text-sm font-medium mb-1">
               Tags
             </label>
-            <div className="rounded-md border border-[var(--border)] p-2 bg-[var(--card)]">
+
+            <div
+              className={[
+                "rounded-md border p-2 bg-[var(--card)] border-[var(--border)] transition-shadow",
+                tags.length === 0
+                  ? "group-hover:ring-2 group-hover:ring-[var(--accent)] group-hover:shadow-[0_0_0.75rem_var(--accent)]"
+                  : "",
+              ].join(" ")}
+              aria-live="polite"
+            >
+              {/* tag chips */}
               <div className="flex flex-wrap gap-2">
                 {tags.map((t) => (
                   <span
                     key={t}
-                    className="inline-flex items-center gap-1 rounded-full bg-[var(--muted)] text-[var(--foreground)]/80 px-2 py-0.5 text-xs"
+                    className="inline-flex items-center gap-2 rounded-full border border-[var(--border)] bg-[var(--muted)]/70 px-3 py-1 text-xs font-medium text-[var(--foreground)]/90"
                   >
                     {t}
                     <button
                       type="button"
                       aria-label={`Remove tag ${t}`}
-                      className="-mr-0.5 ml-1 rounded-full px-1 text-[var(--muted-foreground)] hover:bg-[var(--muted)]/70"
-                      onClick={() => removeTag(t)}
+                      onClick={() => setTags((prev) => prev.filter((x) => x !== t))}
+                      className="inline-flex items-center justify-center size-5 rounded-full text-[var(--muted-foreground)] hover:bg-[var(--muted)]/90 hover:text-[var(--foreground)]/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--ring)]"
                     >
                       ×
                     </button>
                   </span>
                 ))}
               </div>
+
+              {/* tag input */}
               <input
                 id="tags"
+                ref={tagInputRef}
                 value={tagInput}
                 onChange={(e) => setTagInput(e.target.value)}
                 onKeyDown={(e) => {
                   if (e.key === "Enter" || e.key === ",") {
                     e.preventDefault();
-                    addTagFromInput();
+                    const raw = tagInput.trim();
+                    if (!raw) return;
+                    const parts = raw
+                      .split(/[,\s]+/)
+                      .map((t) => t.trim())
+                      .filter(Boolean);
+                    if (!parts.length) return;
+                    const next = Array.from(
+                      new Set([...tags, ...parts.map((t) => sanitizeTag(t))])
+                    );
+                    setTags(next);
+                    setTagInput("");
                   }
                 }}
-                placeholder="Add tag and press Enter"
+                placeholder={tags.length ? "Add more..." : "Add tag and press Enter"}
+                aria-invalid={tags.length === 0 && attemptedSave}
+                aria-describedby={
+                  tags.length === 0 && attemptedSave ? "tags-help" : undefined
+                }
                 className="mt-2 w-full rounded-md border border-[var(--border)] bg-[var(--card)] text-[var(--card-foreground)] p-2 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--ring)]"
               />
             </div>
+
+            {tags.length === 0 && attemptedSave && (
+              <p id="tags-help" className="mt-2 text-xs text-[var(--muted-foreground)]">
+                Please add at least one tag to save this card.
+              </p>
+            )}
+
             <p className="mt-2 text-xs text-[var(--muted-foreground)]">
               Tags help group related cards.
             </p>
           </div>
 
-          {/* Action buttons */}
+          {/* actions */}
           <div className="pt-2 flex items-center gap-2">
             <button
               type="button"
@@ -411,18 +415,22 @@ function ManualCreator({
               Reset
             </button>
           </div>
-          <CardDisplay
-          cards={cards?? []}
+        </div>
+      </div>
+
+      {/* Row 2, Col 2: Card list (top-aligned) */}
+      <aside className="space-y-4 self-start">
+        {/* Heading is in row 1; just the list here */}
+        <CardDisplay
+          cards={cards ?? []}
           limit={5}
-          onEdit={async (card) => {
-            openEditModal(card);
-          }}
+          onEdit={async (card) => openEditModal(card)}
           onDelete={handleDelete}
         />
-        </aside>
-      </div>
-    </section>
-  );
+      </aside>
+    </div>
+  </section>
+);
 }
 
 function FlipCard({
@@ -441,7 +449,7 @@ function FlipCard({
   return (
     <div className="relative [perspective:1000px] max-w-xl w-full">
       <div
-        className={`relative h[300px] h-[300px] w-full rounded-lg border border-[var(--border)] bg-[var(--card)] text-[var(--card-foreground)] transition-transform duration-500 [transform-style:preserve-3d] ${
+        className={`relative h[300px] h-[300px] w-full rounded-lg border border-[var(--border)] bg-[var(--card)] transition-transform duration-500 [transform-style:preserve-3d] ${
           isFlipped ? "[transform:rotateY(180deg)]" : ""
         }`}
       >

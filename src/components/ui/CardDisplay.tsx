@@ -4,7 +4,6 @@ import React from "react";
 import { useEffect, useRef, useState } from "react";
 import { CardDTO } from "@/src/lib/types/card";
 
-
 type CardDisplayProps = {
   cards: CardDTO[];
   className?: string;
@@ -43,8 +42,6 @@ export default function CardDisplay({
 
   return (
     <section className={["space-y-3", className].filter(Boolean).join(" ")}>
-      <h2 className="text-xl font-semibold">Your cards</h2>
-
       {visibleCards.length === 0 ? (
         <p className="text-sm text-[var(--muted-foreground)]">No cards yet.</p>
       ) : (
@@ -72,22 +69,27 @@ export default function CardDisplay({
                     }}
                     className="opacity-0 group-hover:opacity-100 focus:opacity-100 transition-opacity rounded p-1 hover:bg-[var(--muted)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--ring)]"
                   >
-                    {/* vertical ellipsis */}
                     <span className="text-lg leading-none select-none">⋮</span>
                   </button>
                 </div>
-
                 {/* Card content */}
                 <div className="pr-8">
                   <div className="text-sm font-medium">{c.prompt}</div>
-                  <div className="text-sm opacity-80 mt-1">{c.answer}</div>
 
                   {c.tags?.length ? (
-                    <div className="mt-2 flex flex-wrap gap-1">
+                    <div className="mt-2 flex flex-wrap gap-2">
                       {c.tags.map((t) => (
                         <span
                           key={`${c.id}-${t}`}
-                          className="px-2 py-0.5 text-xs rounded-full bg-[var(--muted)]"
+                          className={[
+                            "inline-flex items-center",
+                            "rounded-full border border-[var(--border)]",
+                            "bg-[var(--muted)]/70 text-[var(--foreground)]/90",
+                            "px-3 py-1 text-xs font-medium",
+                            "transition-colors",
+                            "hover:bg-[var(--muted)]",
+                          ].join(" ")}
+                          title={t}
                         >
                           {t}
                         </span>
@@ -95,7 +97,6 @@ export default function CardDisplay({
                     </div>
                   ) : null}
                 </div>
-
                 {/* Context menu (positioned near kebab) */}
                 {isOpen && (
                   <div
