@@ -1,12 +1,6 @@
 "use client";
 
 import React, { useMemo, useState } from "react";
-import RecentlyCreatedCards from "@/src/components/ui/recentlyCreatedCards";
-
-
-
-
-
 
 type TabKey = "manual" | "quick";
 
@@ -29,10 +23,7 @@ export type NewCardInput = {
 
 export default function DashboardPage() {
   const [activeTab, setActiveTab] = useState<TabKey>("manual");
-
-
-
-
+  
   async function saveToServer(input: NewCardInput) {
     // TODO: replace with your real call (Prisma via /api/cards or Supabase client)
     // Example:
