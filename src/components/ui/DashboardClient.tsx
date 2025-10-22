@@ -345,35 +345,59 @@ return (
               </div>
 
               {/* tag input */}
-              <input
-                id="tags"
-                ref={tagInputRef}
-                value={tagInput}
-                onChange={(e) => setTagInput(e.target.value)}
-                onKeyDown={(e) => {
-                  if (e.key === "Enter" || e.key === ",") {
+              <div className="relative mt-2">
+                <input
+                  id="tags"
+                  ref={tagInputRef}
+                  value={tagInput}
+                  onChange={(e) => setTagInput(e.target.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter" || e.key === ",") {
+                      e.preventDefault();
+                      const raw = tagInput.trim();
+                      if (!raw) return;
+                      const parts = raw.split(/[,\s]+/).map((t) => t.trim()).filter(Boolean);
+                      if (!parts.length) return;
+                      const next = Array.from(new Set([...tags, ...parts.map((t) => sanitizeTag(t))]));
+                      setTags(next);
+                      setTagInput("");
+                    }
+                  }}
+                  placeholder={tags.length ? "Add more..." : "Add tag and press Enter"}
+                  aria-invalid={tags.length === 0 && attemptedSave}
+                  aria-describedby={tags.length === 0 && attemptedSave ? "tags-help" : undefined}
+                  className="w-full h-10 rounded-md border border-[var(--border)] bg-[var(--card)] text-[var(--card-foreground)]
+                            p-2 pr-12 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--ring)]"
+                />
+
+                {/* Arrow button placed 'inside' the input on the right */}
+                <button
+                  type="button"
+                  onClick={(e) => {
                     e.preventDefault();
                     const raw = tagInput.trim();
                     if (!raw) return;
-                    const parts = raw
-                      .split(/[,\s]+/)
-                      .map((t) => t.trim())
-                      .filter(Boolean);
+                    const parts = raw.split(/[,\s]+/).map((t) => t.trim()).filter(Boolean);
                     if (!parts.length) return;
-                    const next = Array.from(
-                      new Set([...tags, ...parts.map((t) => sanitizeTag(t))])
-                    );
+                    const next = Array.from(new Set([...tags, ...parts.map((t) => sanitizeTag(t))]));
                     setTags(next);
                     setTagInput("");
-                  }
-                }}
-                placeholder={tags.length ? "Add more..." : "Add tag and press Enter"}
-                aria-invalid={tags.length === 0 && attemptedSave}
-                aria-describedby={
-                  tags.length === 0 && attemptedSave ? "tags-help" : undefined
-                }
-                className="mt-2 w-full rounded-md border border-[var(--border)] bg-[var(--card)] text-[var(--card-foreground)] p-2 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--ring)]"
-              />
+                  }}
+                  disabled={!tagInput.trim()}
+                  aria-label="Add tag"
+                  title="Add tag"
+                  className={`absolute right-2 top-1/2 -translate-y-1/2 inline-flex items-center justify-center
+                              h-8 w-8 rounded-md border border-[var(--border)] bg-[var(--card)]
+                              ${tagInput.trim()
+                                ? "hover:bg-[var(--muted)] cursor-pointer"
+                                : "opacity-50 cursor-not-allowed"}`}
+                >
+                  <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2">
+                    <path d="M5 12h14" />
+                    <path d="M13 5l7 7-7 7" />
+                  </svg>
+                </button>
+              </div>
             </div>
 
             {tags.length === 0 && attemptedSave && (
@@ -386,6 +410,7 @@ return (
               Tags help group related cards.
             </p>
           </div>
+
 
           {/* actions */}
           <div className="pt-2 flex items-center gap-2">
