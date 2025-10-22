@@ -1,8 +1,7 @@
-"use client";
+'use client';
 
-import React from "react";
-import { useEffect, useRef, useState } from "react";
-import { CardDTO } from "@/src/lib/types/card";
+import { CardDTO } from '@/src/lib/types/card';
+import { useEffect, useRef, useState } from 'react';
 
 type CardDisplayProps = {
   cards: CardDTO[];
@@ -10,6 +9,7 @@ type CardDisplayProps = {
   limit?: number;
   onEdit?: (card: CardDTO) => void;
   onDelete?: (card: CardDTO) => void;
+  onView?: (card: CardDTO) => void;
 };
 
 export default function CardDisplay({
@@ -18,6 +18,7 @@ export default function CardDisplay({
   limit = 10,
   onEdit,
   onDelete,
+  onView,
 }: CardDisplayProps) {
   const visibleCards = cards.slice(0, limit);
   const [openMenuId, setOpenMenuId] = useState<string | null>(null);
@@ -30,18 +31,18 @@ export default function CardDisplay({
       if (!menuRef.current.contains(e.target as Node)) setOpenMenuId(null);
     }
     function onKey(e: KeyboardEvent) {
-      if (e.key === "Escape") setOpenMenuId(null);
+      if (e.key === 'Escape') setOpenMenuId(null);
     }
-    document.addEventListener("mousedown", onDocClick);
-    document.addEventListener("keydown", onKey);
+    document.addEventListener('mousedown', onDocClick);
+    document.addEventListener('keydown', onKey);
     return () => {
-      document.removeEventListener("mousedown", onDocClick);
-      document.removeEventListener("keydown", onKey);
+      document.removeEventListener('mousedown', onDocClick);
+      document.removeEventListener('keydown', onKey);
     };
   }, []);
 
   return (
-    <section className={["space-y-3", className].filter(Boolean).join(" ")}>
+    <section className={['space-y-3', className].filter(Boolean).join(' ')}>
       {visibleCards.length === 0 ? (
         <p className="text-sm text-[var(--muted-foreground)]">No cards yet.</p>
       ) : (
@@ -51,23 +52,27 @@ export default function CardDisplay({
             return (
               <li
                 key={c.id}
-                className="group relative rounded-md border border-[var(--border)] p-3 bg-[var(--card)]"
+                className="group relative rounded-md border border-[var(--border)] bg-[var(--card)] p-3"
+                onClick={() => onView?.(c)}
               >
                 {/* Kebab button (hidden until hover/focus) */}
-                <div className="absolute right-2 top-2">
+                <div className="absolute top-2 right-2">
                   <button
                     type="button"
                     aria-label="Card actions"
                     aria-haspopup="menu"
                     aria-expanded={isOpen}
-                    onClick={() => setOpenMenuId(isOpen ? null : c.id)}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setOpenMenuId(isOpen ? null : c.id);
+                    }}
                     onKeyDown={(e) => {
-                      if (e.key === "Enter" || e.key === " ") {
+                      if (e.key === 'Enter' || e.key === ' ') {
                         e.preventDefault();
                         setOpenMenuId(isOpen ? null : c.id);
                       }
                     }}
-                    className="opacity-0 group-hover:opacity-100 focus:opacity-100 transition-opacity rounded p-1 hover:bg-[var(--muted)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--ring)]"
+                    className="rounded p-1 opacity-0 transition-opacity group-hover:opacity-100 hover:bg-[var(--muted)] focus:opacity-100 focus-visible:ring-2 focus-visible:ring-[var(--ring)] focus-visible:outline-none"
                   >
                     <span className="text-lg leading-none select-none">⋮</span>
                   </button>
@@ -82,13 +87,13 @@ export default function CardDisplay({
                         <span
                           key={`${c.id}-${t}`}
                           className={[
-                            "inline-flex items-center",
-                            "rounded-full border border-[var(--border)]",
-                            "bg-[var(--muted)]/70 text-[var(--foreground)]/90",
-                            "px-3 py-1 text-xs font-medium",
-                            "transition-colors",
-                            "hover:bg-[var(--muted)]",
-                          ].join(" ")}
+                            'inline-flex items-center',
+                            'rounded-full border border-[var(--border)]',
+                            'bg-[var(--muted)]/70 text-[var(--foreground)]/90',
+                            'px-3 py-1 text-xs font-medium',
+                            'transition-colors',
+                            'hover:bg-[var(--muted)]',
+                          ].join(' ')}
                           title={t}
                         >
                           {t}
@@ -103,7 +108,8 @@ export default function CardDisplay({
                     ref={menuRef}
                     role="menu"
                     aria-label="Card actions"
-                    className="absolute right-2 top-9 z-20 w-40 overflow-hidden rounded-md border border-[var(--border)] bg-[var(--popover)] text-[var(--popover-foreground)] shadow-lg"
+                    className="absolute top-9 right-2 z-20 w-40 overflow-hidden rounded-md border border-[var(--border)] bg-[var(--popover)] text-[var(--popover-foreground)] shadow-lg"
+                    onClick={(e) => e.stopPropagation()}
                   >
                     <button
                       role="menuitem"
@@ -112,7 +118,7 @@ export default function CardDisplay({
                         setOpenMenuId(null);
                         onEdit?.(c);
                       }}
-                      className="w-full px-3 py-2 text-left text-sm hover:bg-[var(--muted)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--ring)]"
+                      className="w-full px-3 py-2 text-left text-sm hover:bg-[var(--muted)] focus-visible:ring-2 focus-visible:ring-[var(--ring)] focus-visible:outline-none"
                     >
                       Edit
                     </button>
@@ -123,7 +129,7 @@ export default function CardDisplay({
                         setOpenMenuId(null);
                         onDelete?.(c);
                       }}
-                      className="w-full px-3 py-2 text-left text-sm text-red-600 hover:bg-red-50/60 dark:hover:bg-red-950/30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--ring)]"
+                      className="w-full px-3 py-2 text-left text-sm text-red-600 hover:bg-red-50/60 focus-visible:ring-2 focus-visible:ring-[var(--ring)] focus-visible:outline-none dark:hover:bg-red-950/30"
                     >
                       Delete
                     </button>

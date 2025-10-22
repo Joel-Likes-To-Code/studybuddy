@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import React, { useEffect, useMemo, useRef, useState } from "react";
-import type { CardDTO } from "@/src/lib/types/card";
+import type { CardDTO } from '@/src/lib/types/card';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 
 type EditPayload = {
   prompt: string;
@@ -21,7 +21,7 @@ export default function EditModal({
   const [prompt, setPrompt] = useState(card.prompt);
   const [answer, setAnswer] = useState(card.answer);
   const [tags, setTags] = useState<string[]>(card.tags ?? []);
-  const [tagInput, setTagInput] = useState("");
+  const [tagInput, setTagInput] = useState('');
   const [saving, setSaving] = useState(false);
 
   const dialogRef = useRef<HTMLDivElement>(null);
@@ -29,13 +29,13 @@ export default function EditModal({
 
   const canSave = useMemo(
     () => prompt.trim().length > 0 && answer.trim().length > 0,
-    [prompt, answer]
+    [prompt, answer],
   );
 
   // Lock background scroll and focus first field
   useEffect(() => {
     const prev = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
+    document.body.style.overflow = 'hidden';
     firstFieldRef.current?.focus();
     return () => {
       document.body.style.overflow = prev;
@@ -45,17 +45,17 @@ export default function EditModal({
   // Close on Esc; Save on Cmd/Ctrl+S
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") {
+      if (e.key === 'Escape') {
         e.preventDefault();
         onClose();
       }
-      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "s") {
+      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 's') {
         e.preventDefault();
         void handleSave();
       }
     };
-    window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
   });
 
   // Close if clicking backdrop
@@ -73,7 +73,7 @@ export default function EditModal({
     if (!parts.length) return;
     const next = Array.from(new Set([...tags, ...parts.map(sanitizeTag)]));
     setTags(next);
-    setTagInput("");
+    setTagInput('');
   };
 
   const removeTag = (t: string) => {
@@ -108,7 +108,7 @@ export default function EditModal({
         onMouseDown={(e) => e.stopPropagation()}
       >
         {/* Header */}
-        <div className="flex items-center justify-between px-5 py-4 border-b border-[var(--border)]">
+        <div className="flex items-center justify-between border-b border-[var(--border)] px-5 py-4">
           <h2 id="edit-card-title" className="text-lg font-semibold">
             Edit Card
           </h2>
@@ -123,34 +123,34 @@ export default function EditModal({
         </div>
 
         {/* Body */}
-        <div className="p-5 space-y-4">
+        <div className="space-y-4 p-5">
           <div>
-            <label className="block text-sm mb-1">Prompt</label>
+            <label className="mb-1 block text-sm">Prompt</label>
             <textarea
               ref={firstFieldRef}
               value={prompt}
               onChange={(e) => setPrompt(e.target.value)}
               rows={4}
-              className="w-full rounded-md border border-[var(--border)] bg-[var(--card)] p-3 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--ring)]"
+              className="w-full rounded-md border border-[var(--border)] bg-[var(--card)] p-3 text-sm focus-visible:ring-2 focus-visible:ring-[var(--ring)] focus-visible:outline-none"
               placeholder="Edit the prompt / question…"
             />
           </div>
 
           <div>
-            <label className="block text-sm mb-1">Answer</label>
+            <label className="mb-1 block text-sm">Answer</label>
             <textarea
               value={answer}
               onChange={(e) => setAnswer(e.target.value)}
               rows={4}
-              className="w-full rounded-md border border-[var(--border)] bg-[var(--card)] p-3 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--ring)]"
+              className="w-full rounded-md border border-[var(--border)] bg-[var(--card)] p-3 text-sm focus-visible:ring-2 focus-visible:ring-[var(--ring)] focus-visible:outline-none"
               placeholder="Edit the answer…"
             />
           </div>
 
           <div>
-            <label className="block text-sm mb-1">Tags</label>
+            <label className="mb-1 block text-sm">Tags</label>
             <div className="rounded-md border border-[var(--border)] p-2">
-              <div className="flex flex-wrap gap-2 mb-2">
+              <div className="mb-2 flex flex-wrap gap-2">
                 {tags.map((t) => (
                   <span
                     key={t}
@@ -172,13 +172,13 @@ export default function EditModal({
                 value={tagInput}
                 onChange={(e) => setTagInput(e.target.value)}
                 onKeyDown={(e) => {
-                  if (e.key === "Enter" || e.key === ",") {
+                  if (e.key === 'Enter' || e.key === ',') {
                     e.preventDefault();
                     addTagFromInput();
                   }
                 }}
                 placeholder="Add tag and press Enter"
-                className="w-full rounded-md border border-[var(--border)] bg-[var(--card)] p-2 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--ring)]"
+                className="w-full rounded-md border border-[var(--border)] bg-[var(--card)] p-2 text-sm focus-visible:ring-2 focus-visible:ring-[var(--ring)] focus-visible:outline-none"
               />
             </div>
             <p className="mt-1 text-xs text-[var(--muted-foreground)]">
@@ -188,11 +188,11 @@ export default function EditModal({
         </div>
 
         {/* Footer */}
-        <div className="flex items-center justify-end gap-2 px-5 py-4 border-t border-[var(--border)]">
+        <div className="flex items-center justify-end gap-2 border-t border-[var(--border)] px-5 py-4">
           <button
             type="button"
             onClick={onClose}
-            className="px-4 py-2 rounded-md border border-[var(--border)] text-sm hover:opacity-90"
+            className="rounded-md border border-[var(--border)] px-4 py-2 text-sm hover:opacity-90"
           >
             Cancel
           </button>
@@ -200,13 +200,13 @@ export default function EditModal({
             type="button"
             onClick={handleSave}
             disabled={!canSave || saving}
-            className={`px-4 py-2 rounded-md text-sm text-[var(--primary-foreground)] ${
+            className={`rounded-md px-4 py-2 text-sm text-[var(--primary-foreground)] ${
               canSave && !saving
-                ? "bg-[var(--primary)] hover:opacity-90"
-                : "bg-[var(--primary)] opacity-50 cursor-not-allowed"
+                ? 'bg-[var(--primary)] hover:opacity-90'
+                : 'cursor-not-allowed bg-[var(--primary)] opacity-50'
             }`}
           >
-            {saving ? "Saving…" : "Save changes"}
+            {saving ? 'Saving…' : 'Save changes'}
           </button>
         </div>
       </div>
@@ -215,5 +215,9 @@ export default function EditModal({
 }
 
 function sanitizeTag(t: string) {
-  return t.toLowerCase().replace(/[^a-z0-9-_\\s]/g, "").trim().replace(/\s+/g, "-");
+  return t
+    .toLowerCase()
+    .replace(/[^a-z0-9-_\\s]/g, '')
+    .trim()
+    .replace(/\s+/g, '-');
 }
